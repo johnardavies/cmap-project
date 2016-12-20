@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Layers Control Example</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
+
+	<style>
+     #map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;}
+  
+		
+     // The css for the shape that pops up when the map is clicked on
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+                // The css for the legends
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+	<script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
+        <script src="jquery-2.1.1.min.js"></script> 
+	<script type="text/javascript">
+        
+    //Creates the map centred on the location given below
+		var map = L.map('map').setView([51.500, -0.110], 12)
+    
+    //Calls the maptile from Leaflet////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery ? <a href="http://mapbox.com">Mapbox</a>',
+			id: 'mapbox.light'
+		}).addTo(map);
+
+//Adds the legend
+var hexlegend = L.control({
+    position: 'topright'
+});
+//generate legend contents
+hexlegend.onAdd = function (map) {
+	//set up legend grades and labels
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 0.2, 0.4, 0.6, 0.8, 1, 1.2,1.4],
+        labels = ['<strong>% house price growth 2015-2011</strong>'],
+        from, to;
+    
+	//iterate through grades and create a color field and label for each
+    for (var i = 0; i < grades.length; i++) {
+        from = grades[i];
+        to = grades[i + 1];
+        labels.push(
+            '<i style="background:' + getColor(from + 0.5) + '"></i> ' + from + (to ? '&ndash;' + to : '+'));
+    }
+    div.innerHTML = labels.join('<br>');
+    return div;
+};
+//Adds the legend to the map
+hexlegend.addTo(map);
+
+
+		
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      // Creates a function that returns a value with a color variable
+  //    function getColor(d) {
+    //  if(d > 8000) colrs="#006837";
+      //else if (d > 700000) colrs="#31a354";
+      //else if (d > 500000)  colrs="#78c679";
+      //else if (d > 200000)  colrs="#c2e699";
+      //else    colrs="#ffffcc";
+      //return colrs;                
+      // }
+ /* 
+     function getColor(y) {
+    return y == undefined ? '#888' :
+           y < 50 ? '#ffffe9' :
+           y < 100 ? '#edf8b1' :
+           y < 150 ? '#c7e9b4' :
+           y < 200 ? '#7fcdbb' :
+           y < 250 ? '#41b6c4' :
+           y < 300 ? '#1d91c0' :
+           y < 350 ? '#225ea8' :
+                      '#0c2c84';
+}
+
+*/
+
+    function getColor(y) {
+    return y == undefined ? '#888' :
+           y < 0.2 ? '#ffffe9' :
+           y < 0.4 ? '#edf8b1' :
+           y < 0.6 ? '#c7e9b4' :
+           y < 0.8 ? '#7fcdbb' :
+           y < 1 ? '#41b6c4' :
+           y < 1.2 ? '#1d91c0' :
+           y < 1.4 ? '#225ea8' :
+                      '#0c2c84';
+}
+
+
+
+
+
+
+    //The functions below changes the layers of the map as the mouse moves over it////////////////////////////////////////////////////////////////////////////////////////
+    var geojson;
+    // Function that changes the layer appearance when a mouse passes over it
+		function highlightFeature(e) {
+			var layer = e.target;
+
+			layer.setStyle({
+				weight: 5,
+				color: '#666',
+				dashArray: '',
+				fillOpacity: 0.7
+			});
+
+			if (!L.Browser.ie && !L.Browser.opera) {
+				layer.bringToFront();
+			}
+
+		}
+
+    //When the mouse passes on then the original stylings are returned
+		function resetHighlight(e) {
+			geojson.resetStyle(e.target);
+		
+		}
+
+		function zoomToFeature(e) {
+			map.fitBounds(e.target.getBounds());
+		}
+
+
+
+   //Reads in the geojson sets up the styling and what happens when you interact with the map
+   // function is the function that gets called if the data is returned from geojson
+       $.getJSON("housep4.geojson",function(data){
+
+  // geojson2=L.geoJson(data).addTo(map);
+       
+  //L.geoJson parses geojson allowing it to be displayed on a map. It is allocated to the geojson variable
+  geojson=L.geoJson(data, {
+
+    //1. add GeoJSON layer to the map once the file is loaded    
+    style: function(feature){
+          var fillColor,
+          density = feature.properties.growth;
+          gd=getColor(density)
+      return { color: "#999", weight: 1, fillColor: gd, fillOpacity: .9 }; 
+    //This returns the style that's been chosen inc fillcolour which varies with the no of listed buildings
+    },
+
+    //2. This function sets up what happens when you interact with a layer
+    onEachFeature: function( feature, layer ){ 
+    // This codes the pop up which shows how many listed buildings there are when the ttwa is clicked on
+       layer.bindPopup( "<strong>" + feature.properties.MSOA11NM  + "</strong><br/>" + feature.properties.growth*100 + " Percentage house price growth" )
+       layer.on({
+    // When the mouse passes over the features the highlight feature is called and when it passes on the resetHighlight feature is called
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: zoomToFeature
+			});
+    
+    }
+  }).addTo(map);
+});
+
+
+
+
+$.getJSON("clubsdata.geojson",function(data){
+  var myIcon = L.Icon.Default.extend({
+    options: {
+                 
+            	  iconSize:[6, 5],
+                  shadowSize:[0,0] 
+                    
+            }
+    
+});
+  var myIcon = new myIcon();
+
+
+  L.geoJson(data,{
+    pointToLayer: function(feature,latlng){
+	  return L.marker(latlng,{icon:myIcon});
+    }
+  }).addTo(map);
+});
+
+
+
+//Sets up the legend in the bottom right of the screen   
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 2000, 4000, 6000, 8000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+
+                
+		map.attributionControl.addAttribution('House price data from land registry');
+
+
+	</script>
+</body>
+</html>
