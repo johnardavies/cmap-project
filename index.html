@@ -182,7 +182,7 @@ hexlegend.addTo(map);
     //2. This function sets up what happens when you interact with a layer
     onEachFeature: function( feature, layer ){ 
     // This codes the pop up which shows how many listed buildings there are when the ttwa is clicked on
-       layer.bindPopup( "<strong>" + feature.properties.MSOA11NM  + "</strong><br/>" + feature.properties.growth1511*100 + " Percentage house price growth" )
+       layer.bindPopup( "<strong>" + feature.properties.MSOA11NM  + "</strong><br/>" + Math.round(feature.properties.growth1511*100) + " Percentage house price growth" )
        layer.on({
     // When the mouse passes over the features the highlight feature is called and when it passes on the resetHighlight feature is called
 				mouseover: highlightFeature,
