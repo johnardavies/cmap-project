@@ -163,7 +163,7 @@ hexlegend.addTo(map);
 
    //Reads in the geojson sets up the styling and what happens when you interact with the map
    // function is the function that gets called if the data is returned from geojson
-       $.getJSON("housep4.geojson",function(data){
+       $.getJSON("houseprices2.geojson",function(data){
 
   // geojson2=L.geoJson(data).addTo(map);
        
@@ -173,7 +173,7 @@ hexlegend.addTo(map);
     //1. add GeoJSON layer to the map once the file is loaded    
     style: function(feature){
           var fillColor,
-          density = feature.properties.growth;
+          density = feature.properties.growth1511;
           gd=getColor(density)
       return { color: "#999", weight: 1, fillColor: gd, fillOpacity: .9 }; 
     //This returns the style that's been chosen inc fillcolour which varies with the no of listed buildings
@@ -182,7 +182,7 @@ hexlegend.addTo(map);
     //2. This function sets up what happens when you interact with a layer
     onEachFeature: function( feature, layer ){ 
     // This codes the pop up which shows how many listed buildings there are when the ttwa is clicked on
-       layer.bindPopup( "<strong>" + feature.properties.MSOA11NM  + "</strong><br/>" + feature.properties.growth*100 + " Percentage house price growth" )
+       layer.bindPopup( "<strong>" + feature.properties.MSOA11NM  + "</strong><br/>" + feature.properties.growth1511*100 + " Percentage house price growth" )
        layer.on({
     // When the mouse passes over the features the highlight feature is called and when it passes on the resetHighlight feature is called
 				mouseover: highlightFeature,
