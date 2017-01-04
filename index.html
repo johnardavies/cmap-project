@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
 	<link rel="stylesheet" href="css/leaflet.awesome-markers.css">
-        <script src="js/leaflet.awesome-markers.js"></script>
+        <script src="leaflet.awesome-markers.js"></script>
  <style>
    #map {
     position: absolute;
@@ -107,10 +107,14 @@ $.getJSON("clubsdataprop.geojson",function(data){
 $.getJSON("clubsdataprop.geojson",function(data){
 
 
-   var redMarker = L.AwesomeMarkers.icon({
-    markerColor: 'red'
-  });
-
+  var myIcon = L.Icon.Default.extend({
+    options: {  
+            	  iconSize:[10, 8],
+                  shadowSize:[0,0]       
+            }
+    
+});
+  var myIcon = new myIcon();
 
   
    function layerFilter(feature) {
@@ -130,7 +134,7 @@ $.getJSON("clubsdataprop.geojson",function(data){
     
   },
    pointToLayer: function(feature,latlng){
-	  return L.marker(latlng,{icon:redMarker});
+	  return L.marker(latlng,{icon:myIcon});
     }
 
   }).addTo(clubopen);
