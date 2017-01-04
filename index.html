@@ -84,6 +84,11 @@ $.getJSON("clubsdataprop.geojson",function(data){
 });
   var myIcon = new myIcon();
 
+ var clubclosIcon = L.icon({
+    iconUrl: 'marker-icon-red.png',
+    iconSize: [6,5]
+  });
+
    function layerFilter(feature) {
   if (feature.properties.status === "closed") return true ;
 }
@@ -91,7 +96,7 @@ $.getJSON("clubsdataprop.geojson",function(data){
   L.geoJson(data,{
 
     pointToLayer: function(feature,latlng){
-	  return L.marker(latlng,{icon:myIcon});
+	  return L.marker(latlng,{icon:clubclosIcon});
     },
    
     filter:layerFilter,
@@ -116,6 +121,11 @@ $.getJSON("clubsdataprop.geojson",function(data){
 });
   var myIcon = new myIcon();
 
+var clubIcon = L.icon({
+    iconUrl: 'marker-icon-green.png',
+    iconSize: [10,8]
+  });
+
   
    function layerFilter(feature) {
   if (feature.properties.status === "open") return true ;
@@ -134,7 +144,7 @@ $.getJSON("clubsdataprop.geojson",function(data){
     
   },
    pointToLayer: function(feature,latlng){
-	  return L.marker(latlng,{icon:myIcon});
+	  return L.marker(latlng,{icon:clubIcon});
     }
 
   }).addTo(clubopen);
