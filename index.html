@@ -248,7 +248,7 @@ var clubIcon = L.icon({
 	};
 
 //Adds the layers control to the map
-L.control.layers(baseLayers, overlays).addTo(map);
+L.control.layers(baseLayers, overlays,{collapsed:false}).addTo(map);
 
 //adds legend to the map
 var legend = L.control({
