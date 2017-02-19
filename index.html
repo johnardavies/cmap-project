@@ -246,7 +246,7 @@ var clubIcon = L.icon({
     //1. add GeoJSON layer to the map once the file is loaded    
     style: function(feature){
           var fillColor,
-          density = feature[1].properties.ratio;
+          density = feature.properties.ratio;
           gd=getColor(density)
       return { color: "#999", weight: 1, fillColor: gd, fillOpacity: .9 }; 
     //This returns the style that's been chosen inc fillcolour which varies with the no of listed buildings
