@@ -235,7 +235,7 @@ var clubIcon = L.icon({
 
 
 var myStyle = {
-    "color": "#f7fcb9",
+    "color": "#e34a33",
     "weight": 5,
     "opacity": 0.65
 };
@@ -276,7 +276,7 @@ var myStyle = {
 
 //Adds the layers control to the map
 L.control.layers(baseLayers, overlays,{collapsed:false}).addTo(map);
-
+/*
 //adds legend to the map
 var legend = L.control({
     position: 'topleft'
@@ -301,6 +301,7 @@ legend.onAdd = function (map) {
 };
 //Adds the legend to the map
 legend.addTo(map);
+*/
 
 map.attributionControl.addAttribution('House price data from land registry');
 
