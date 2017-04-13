@@ -51,18 +51,8 @@
 </style>	
 </head>
 <body>
+
 <div id='map'></div>
-    <div class='map-overlay top'>
-    <div class='map-overlay-inner'>
-        <label>Radius: <span id='slider-value'></span></label>
-        <input id='slider' type='range' min='0' max='20' step='2.5' value='20' />
-    </div>
-    <div class='map-overlay-inner'>
-        <label>Intensity: <span id='slider-value2'></span></label>
-        <input id='slider2' type='range' min='0' max='1' step='0.1' value='0.5' />
-    </div>
-    </div>
-</div>
 
 <script> 
 
@@ -78,10 +68,8 @@
 	var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
 		streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
         var map = L.map('map', {layers: [grayscale, clubopen]}).setView([51.500, -0.110], 12)
-        var slider = document.getElementById('slider');
-        var sliderValue = document.getElementById('slider-value');
-        var slider2 = document.getElementById('slider2');
-        var sliderValue2 = document.getElementById('slider-value2');
+
+
 
 ///////////////////////////////////////////////////////////////////////
 //Reads in the clubbing data and sets up the map icon
@@ -257,7 +245,7 @@ var clubIcon = L.icon({
     //1. add GeoJSON layer to the map once the file is loaded    
     style: function(feature){
           var fillColor,
-          density = 1 //feature.properties.ratio;
+          density = feature.properties.ratio;
           gd=getColor(density)
       return { color: "#999", weight: 1, fillColor: gd, fillOpacity: .9 }; 
     //This returns the style that's been chosen inc fillcolour which varies with the no of listed buildings
@@ -324,17 +312,6 @@ legend.onAdd = function (map) {
 };
 //Adds the legend to the map
 legend.addTo(map);
-
-sliderValue.textContent = bufferSize + ' km';
-
-//Adds the interactivity
-slider.addEventListener('input', function(e) {
-	bufferSize = e.target.value
-	sliderValue.textContent = e.target.value + ' km';
-});
-
-
-
 
 map.attributionControl.addAttribution('House price data from land registry');
 
