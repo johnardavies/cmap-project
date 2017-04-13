@@ -63,7 +63,7 @@
         var clubclo= new L.LayerGroup();
 	var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery Â© <a href="http://mapbox.com">Mapbox</a>',
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
 		mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw';
 
 	var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
@@ -254,7 +254,7 @@ var clubIcon = L.icon({
     //2. This function sets up what happens when you interact with a layer
     onEachFeature: function( feature, layer ){ 
     // This codes the pop up which shows how many listed buildings there are when the feature is clicked on
-       layer.bindPopup( "<strong>" + feature.properties.MSOA11NM  + "</strong><br/>" + Math.round(density*100) + "Ratio of closed clubs to open and closed clubs" )
+       layer.bindPopup( "<strong>" + feature.properties.MSOA11NM  + "</strong><br/>" + Math.round(ratio*100) + "Ratio of closed clubs to open and closed clubs" )
        layer.on({
     // When the mouse passes over the features the highlight feature is called and when it passes on the resetHighlight feature is called
 				mouseover: highlightFeature,
