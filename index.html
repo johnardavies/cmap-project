@@ -60,7 +60,7 @@
 	var clubopen = new L.LayerGroup();
         var clubclosed = new L.LayerGroup();
         var housep= new L.LayerGroup();
-        var clubclo= new L.LayerGroup();
+
 	var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -233,43 +233,6 @@ var clubIcon = L.icon({
   }).addTo(housep);
 });
 
-   //Reads in the geojson sets up the styling and what happens when you interact with the map
-   // function is the function that gets called if the data is returned from geojson
-       $.getJSON("houseprices2.geojson",function(data){
-
-
-       
-  //L.geoJson parses geojson allowing it to be displayed on a map. It is allocated to the geojson variable
-  geojson=L.geoJson(data, {
-
-    //1. add GeoJSON layer to the map once the file is loaded    
-    style: function(feature){
-          var fillColor,
-          density = feature.properties.ratio;
-          gd=getColor(density)
-      return { color: "#999", weight: 1, fillColor: gd, fillOpacity: .9 }; 
-    //This returns the style that's been chosen inc fillcolour which varies with the no of listed buildings
-    },
-
-    //2. This function sets up what happens when you interact with a layer
-    onEachFeature: function( feature, layer ){ 
-    // This codes the pop up which shows how many listed buildings there are when the feature is clicked on
-       layer.bindPopup( "<strong>" + feature.properties.MSOA11NM  + "</strong><br/>" + Math.round(ratio*100) + "Ratio of closed clubs to open and closed clubs" )
-       layer.on({
-    // When the mouse passes over the features the highlight feature is called and when it passes on the resetHighlight feature is called
-				mouseover: highlightFeature,
-				mouseout: resetHighlight,
-				click: zoomToFeature
-			});
-    
-  }
-  }).addTo(clubclo);
-});
-
-
-
-
-
 
 //Sets up the baseLayers
 	var baseLayers = {
@@ -279,7 +242,6 @@ var clubIcon = L.icon({
 
 	var overlays = {
 		"House prices": housep,
-                "Ratio of closed clubs to previously open clubs":clubclo,
                 "Open clubs": clubopen,
                 "Closed clubs": clubclosed,
                  
