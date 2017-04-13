@@ -233,7 +233,6 @@ var clubIcon = L.icon({
   }).addTo(housep);
 });
 
-	var geojson2;
    //Reads in the geojson sets up the styling and what happens when you interact with the map
    // function is the function that gets called if the data is returned from geojson
        $.getJSON("houseprices2.geojson",function(data){
@@ -241,7 +240,7 @@ var clubIcon = L.icon({
 
        
   //L.geoJson parses geojson allowing it to be displayed on a map. It is allocated to the geojson variable
-  geojson2=L.geoJson(data, {
+  geojson=L.geoJson(data, {
 
     //1. add GeoJSON layer to the map once the file is loaded    
     style: function(feature){
